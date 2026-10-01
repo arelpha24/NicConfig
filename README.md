@@ -4,7 +4,7 @@ A small Windows Forms tool for viewing and changing the IPv4 settings of physica
 
 ## Download
 
-<!-- latest-exe -->[Download the latest NicConfig.exe](releases/1f0a434/NicConfig.exe?raw=true) (version `1f0a434`)<!-- /latest-exe -->
+<!-- latest-exe -->[Download the latest NicConfig.exe](https://github.com/arelpha24/NicConfig/raw/main/releases/5e8bf05/NicConfig.exe) (version `5e8bf05`)<!-- /latest-exe -->
 
 Every Release build is archived in [releases/](releases), in a folder named after its version.
 

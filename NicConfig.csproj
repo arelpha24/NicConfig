@@ -13,6 +13,8 @@
     <Description>Configure IPv4 settings of physical Ethernet adapters.</Description>
     <Copyright>Copyright (c) 2026 arelpha24</Copyright>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <GitHubRepoUrl>https://github.com/arelpha24/NicConfig</GitHubRepoUrl>
+    <GitHubBranch>main</GitHubBranch>
   </PropertyGroup>
 
   <!-- Stamps the git commit ID into InformationalVersion (the "Product version" of the exe). -->
@@ -34,7 +36,7 @@
       <ReleaseDir>$(MSBuildProjectDirectory)\releases\$(InformationalVersion)\</ReleaseDir>
       <ReadmePath>$(MSBuildProjectDirectory)\README.md</ReadmePath>
       <ReadmeText>$([System.IO.File]::ReadAllText('$(ReadmePath)'))</ReadmeText>
-      <ReadmeLink>&lt;!-- latest-exe --&gt;[Download the latest NicConfig.exe](releases/$(InformationalVersion)/NicConfig.exe?raw=true) (version `$(InformationalVersion)`)&lt;!-- /latest-exe --&gt;</ReadmeLink>
+      <ReadmeLink>&lt;!-- latest-exe --&gt;[Download the latest NicConfig.exe]($(GitHubRepoUrl)/raw/$(GitHubBranch)/releases/$(InformationalVersion)/NicConfig.exe) (version `$(InformationalVersion)`)&lt;!-- /latest-exe --&gt;</ReadmeLink>
       <ReadmeText>$([System.Text.RegularExpressions.Regex]::Replace($(ReadmeText), '(?s)&lt;!-- latest-exe --&gt;.*?&lt;!-- /latest-exe --&gt;', $(ReadmeLink)).TrimEnd())</ReadmeText>
     </PropertyGroup>
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ReleaseDir)" SkipUnchangedFiles="true" />
