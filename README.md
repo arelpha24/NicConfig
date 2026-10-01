@@ -2,6 +2,12 @@
 
 A small Windows Forms tool for viewing and changing the IPv4 settings of physical Ethernet adapters. It does the same job as the adapter's **Internet Protocol Version 4 (TCP/IPv4) Properties** dialog, but in one window.
 
+## Download
+
+<!-- latest-exe -->[Download the latest NicConfig.exe](releases/1f0a434/NicConfig.exe?raw=true) (version `1f0a434`)<!-- /latest-exe -->
+
+Every Release build is archived in [releases/](releases), in a folder named after its version.
+
 ## Features
 
 - Lists physical, IP-enabled Ethernet adapters. Wi-Fi, virtual, and loopback adapters are excluded.
@@ -25,7 +31,18 @@ To build from source, you also need the [.NET SDK](https://dotnet.microsoft.com/
 dotnet build -c Release
 ```
 
-The executable is written to `bin\Release\net48\NicConfig.exe`.
+The executable is written to `bin\Release\net48\NicConfig.exe`. Each Release build also does the following:
+
+- Copies the executable to `releases\<version>\NicConfig.exe`.
+- Updates the download link at the top of this README to point to that copy.
+
+Commit the new `releases` folder and the README to publish them.
+
+### Versioning
+
+Each build stamps the short git commit ID into the executable's product version, which also appears in the window title. If git isn't available, the version is `nogit`.
+
+The numeric file version still comes from `<Version>` in `NicConfig.csproj`, because Windows requires that value to be numeric.
 
 ## Usage
 

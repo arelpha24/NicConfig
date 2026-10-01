@@ -12,7 +12,36 @@
     <Product>NicConfig</Product>
     <Description>Configure IPv4 settings of physical Ethernet adapters.</Description>
     <Copyright>Copyright (c) 2026 arelpha24</Copyright>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
+
+  <!-- Stamps the git commit ID into InformationalVersion (the "Product version" of the exe). -->
+  <Target Name="SetGitCommitVersion" BeforeTargets="GetAssemblyVersion">
+    <Exec Command="git rev-parse --short HEAD" ConsoleToMSBuild="true" IgnoreExitCode="true" StandardOutputImportance="low" StandardErrorImportance="low" ContinueOnError="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="GitCommitId" />
+      <Output TaskParameter="ExitCode" PropertyName="GitCommitExitCode" />
+    </Exec>
+    <PropertyGroup>
+      <GitCommitId Condition="'$(GitCommitExitCode)' != '0'">nogit</GitCommitId>
+      <InformationalVersion>$(GitCommitId)</InformationalVersion>
+    </PropertyGroup>
+    <Message Importance="high" Text="NicConfig version: $(InformationalVersion)" />
+  </Target>
+
+  <!-- Copies each Release build to releases/<version>/ and points the README download link at it. -->
+  <Target Name="ArchiveRelease" AfterTargets="Build" DependsOnTargets="SetGitCommitVersion" Condition="'$(Configuration)' == 'Release'">
+    <PropertyGroup>
+      <ReleaseDir>$(MSBuildProjectDirectory)\releases\$(InformationalVersion)\</ReleaseDir>
+      <ReadmePath>$(MSBuildProjectDirectory)\README.md</ReadmePath>
+      <ReadmeText>$([System.IO.File]::ReadAllText('$(ReadmePath)'))</ReadmeText>
+      <ReadmeLink>&lt;!-- latest-exe --&gt;[Download the latest NicConfig.exe](releases/$(InformationalVersion)/NicConfig.exe?raw=true) (version `$(InformationalVersion)`)&lt;!-- /latest-exe --&gt;</ReadmeLink>
+      <ReadmeText>$([System.Text.RegularExpressions.Regex]::Replace($(ReadmeText), '(?s)&lt;!-- latest-exe --&gt;.*?&lt;!-- /latest-exe --&gt;', $(ReadmeLink)).TrimEnd())</ReadmeText>
+    </PropertyGroup>
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ReleaseDir)" SkipUnchangedFiles="true" />
+    <WriteLinesToFile File="$(ReadmePath)" Lines="$([MSBuild]::Escape($(ReadmeText)))" Overwrite="true" WriteOnlyWhenDifferent="true" />
+    <Message Importance="high" Text="Archived release: releases\$(InformationalVersion)\$(TargetFileName)" />
+  </Target>
+
   <ItemGroup>
     <Reference Include="System.Management" />
   </ItemGroup>

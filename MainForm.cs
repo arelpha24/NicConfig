@@ -33,7 +33,7 @@ namespace NicConfig
 
         public MainForm()
         {
-            Text = "Ethernet Adapter Configuration";
+            Text = $"Ethernet Adapter Configuration ({Application.ProductVersion})";
             ClientSize = new Size(430, 440);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
